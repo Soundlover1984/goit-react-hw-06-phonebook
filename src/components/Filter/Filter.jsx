@@ -18,10 +18,8 @@ export const Filter = () => {
 
   const dispatch = useDispatch();
   const filter = useSelector(state => state.filter);
+
   
-  const filterInput = e => {
-    dispatch(filterContact(e.currentTarget.value))
-  } 
   
   return (
     <FilterWrapper>
@@ -32,7 +30,7 @@ export const Filter = () => {
           name="filter"
           placeholder="Enter contact to search"
           value={filter}
-          onChange={filterInput}
+          onChange={e => dispatch(filterContact(e.target.value))}
           debounceTimeout={500}
         />
       </Label>

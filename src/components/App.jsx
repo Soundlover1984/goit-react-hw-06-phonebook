@@ -14,8 +14,7 @@ export const App = () => {
         <ContactForm/>
         <SubHeader>Contacts</SubHeader>
         <Filter/>
-        <ContactList
-        />
+        <ContactList/>
       </Container>
     );
 };
