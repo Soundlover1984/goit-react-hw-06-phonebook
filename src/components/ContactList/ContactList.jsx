@@ -1,18 +1,43 @@
-import PropTypes from 'prop-types';
+
 import { List } from './ContactList.styled';
 import { ContactItem } from 'components/ContactItem/ContactItem';
+import { removeContact} from 'redux/contactSlice';
+import Notiflix from 'notiflix';
+import { useDispatch, useSelector } from 'react-redux';
 
-export const ContactList = ({ contacts, onDeleteBtnClick }) => {
+export const ContactList = () => {
+  const dispatch = useDispatch();
+
+  const contacts = useSelector(state => state.contacts);
+  const filter = useSelector(state => state.filter);
+
+  const filterContacts = () => {
+    const query = filter.toLocaleLowerCase();
+
+    const filteredContacts = contacts.filter(contact =>
+      contact.name.toLocaleLowerCase().includes(query)
+    );
+
+    if (query && !filteredContacts.length) {
+      Notiflix.Notify.warning(
+        'No contacts matching your request'
+      );
+    }
+    return filteredContacts;
+  };
+
+
+
   return (
     <List>
-      {contacts.map(contact => {
+      {filterContacts().map(contact => {
         return (
           <ContactItem
             id={contact.id}
             key={contact.id}
             name={contact.name}
             number={contact.number}
-            onDeleteBtnClick={onDeleteBtnClick}
+            onDeleteBtnClick={() => dispatch(removeContact(contact))}
           />
         );
       })}
@@ -20,12 +45,3 @@ export const ContactList = ({ contacts, onDeleteBtnClick }) => {
   );
 };
 
-ContactList.propTypes = {
-  contacts: PropTypes.arrayOf(
-    PropTypes.shape({
-      id: PropTypes.string.isRequired,
-      name: PropTypes.string.isRequired,
-      number: PropTypes.string.isRequired,
-    })
-  ).isRequired,
-};
