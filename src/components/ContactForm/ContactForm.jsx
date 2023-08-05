@@ -6,11 +6,15 @@ import { MdPersonAddAlt } from 'react-icons/md';
 import { Label, Form } from './ContactForm.styled';
 import { InputItem } from 'components/InputItem/InputItem';
 import { addContact } from 'redux/contactSlice';
+import Notiflix from 'notiflix';
+import { getContacts } from 'redux/selectors';
+import { useSelector } from 'react-redux/es/hooks/useSelector';
 
 
 export const ContactForm = () => {
 
   const dispatch = useDispatch();
+  const contacts = useSelector(getContacts);
 
   const [name, setName] = useState('');
   const [number, setNumber] = useState('');
@@ -31,7 +35,19 @@ export const ContactForm = () => {
   const handleSubmit = event => {
     event.preventDefault();
     dispatch(addContact({ name, number }));
-    resetForm();
+    const isInContacts = contacts.some(
+      contact => contact.name.toLowerCase().trim() === name.toLowerCase().trim()
+    );
+    if (!isInContacts) {
+      Notiflix.Notify.success(
+      `${name} was successfully added to your contacts`)
+      resetForm();
+    } else {
+      Notiflix.Notify.warning(
+        `${name} is already in contacts`
+      );
+      resetForm();
+    }
   };
 
   const resetForm = () => {
