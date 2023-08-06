@@ -9,14 +9,8 @@ export const contactsSlice = createSlice({
     addContact: (state, { payload }) => {
       const { name, number } = payload;
       const id = nanoid();
-      const includesName = state.find(
-        contact => contact.name.toLocaleLowerCase() === name.toLocaleLowerCase()
-      );
-
-      if (!includesName) {
-        const contact = { id, name, number };
-        state.push(contact);
-      }
+      const contact = { id, name, number };
+      state.push(contact);
     },
 
     removeContact: (state, { payload }) => {

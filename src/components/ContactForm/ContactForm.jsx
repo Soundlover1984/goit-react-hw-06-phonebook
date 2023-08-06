@@ -34,11 +34,12 @@ export const ContactForm = () => {
 
   const handleSubmit = event => {
     event.preventDefault();
-    dispatch(addContact({ name, number }));
+
     const isInContacts = contacts.some(
       contact => contact.name.toLowerCase().trim() === name.toLowerCase().trim()
     );
     if (!isInContacts) {
+      dispatch(addContact({ name, number }));
       Notiflix.Notify.success(
       `${name} was successfully added to your contacts`)
       resetForm();
@@ -48,6 +49,7 @@ export const ContactForm = () => {
       );
       resetForm();
     }
+   
   };
 
   const resetForm = () => {
