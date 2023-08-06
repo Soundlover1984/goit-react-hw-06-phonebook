@@ -42,14 +42,12 @@ export const ContactForm = () => {
       dispatch(addContact({ name, number }));
       Notiflix.Notify.success(
       `${name} was successfully added to your contacts`)
-      resetForm();
     } else {
       Notiflix.Notify.warning(
         `${name} is already in contacts`
       );
-      resetForm();
     }
-   
+   resetForm();
   };
 
   const resetForm = () => {
